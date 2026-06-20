@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TEST HUB - Script Showcase</title>
+    <title>Script VIP TEST HUB</title>
     <style>
         /* 🎨 สไตล์การแต่งเว็บแนว Cyberpunk / Dark Mode */
         body {
@@ -121,12 +121,12 @@
 
 <div class="container">
     <pre>
- ______ ______ _____ _______   _    _ _    _ ____  
-|__   __|  ____/ ____|__   __| | |  | | |  | |  _ \ 
-   | |  | |__ | (___    | |    | |__| | |  | | |_) |
-   | |  |  __| \___ \   | |    |  __  | |  | |  _ &lt; 
-   | |  | |________) |  | |    | |  | | |__| | |_) |
-   |_|  |______|_____/   |_|    |_|  |_|\____/|____/ 
+ ______ ______ _____ _______    _    _ _    _ ____  
+|__   __|  ____/ ____|__   __|  | |  | | |  | |  _ \ 
+   | |  | |__ | (___    | |     | |__| | |  | | |_) |
+   | |  |  __| \___ \   | |     |  __  | |  | |  _ < 
+   | |  | |________) |  | |     | |  | | |__| | |_) |
+   |_|  |______|_____/  |_|     |_|  |_|\____/|____/ 
     </pre>
 
     <h1>🗂️ บอร์ดแจกสคริปต์อัตโนมัติ</h1>
@@ -155,7 +155,54 @@
 </div>
 
 <script>
-    // ⚡ ระบบกดคัดลอกอัตโนมัติ พร้อมเปลี่ยนข้อความบนปุ่ม
+    // =======================================================
+    // 🔒 1. ระบบล็อกให้เข้าได้เฉพาะจากดิสคอร์ดเท่านั้น
+    // =======================================================
+    (function() {
+        const referrer = document.referrer.toLowerCase();
+        const isFromDiscord = referrer.includes("discord.com") || 
+                              referrer.includes("discordapp.com") || 
+                              referrer.includes("android-app://com.discord");
+
+        if (!isFromDiscord) {
+            // ❌ ถ้าไม่ได้กดมาจากดิสคอร์ด ให้เด้งหน้าจอขาวและแจ้งเตือนทันที
+            document.body.innerHTML = `
+                <div style="font-family: sans-serif; text-align: center; margin-top: 100px; color: #ff7b72; background-color: #0d1117; height: 100vh; padding-top: 50px;">
+                    <h2>❌ [TEST HUB SECURITY]</h2>
+                    <p style="font-size: 1.1rem;">ไม่อนุญาตให้เข้าใช้งานผ่านเบราว์เซอร์โดยตรง!</p>
+                    <p style="color: #8b949e;">กรุณากดเข้าลิงก์ผ่านช่องดิสคอร์ดที่กำหนดเท่านั้น (ID: 1517877069684674821)</p>
+                </div>
+            `;
+            window.stop(); // หยุดการโหลดหน้าเว็บทั้งหมด
+        }
+    })();
+
+    // =======================================================
+    // 🛡️ 2. ระบบป้องกันการแอบดูซอร์สโค้ด และบล็อกการคัดลอก
+    // =======================================================
+
+    // บล็อกการคลิกขวาบนหน้าเว็บทั้งหมด
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    });
+
+    // บล็อกปุ่มคีย์ลัดแอบดูซอส (F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U)
+    document.addEventListener('keydown', function(e) {
+        if (e.key === "F12" || 
+            (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J")) || 
+            (e.ctrlKey && e.key === "u")) {
+            e.preventDefault();
+        }
+    });
+
+    // บล็อกการลากคลุมดำบนหน้าเว็บ (ป้องกันคนมาลากไฮไลต์แล้วก๊อป)
+    document.addEventListener('selectstart', function(e) {
+        e.preventDefault();
+    });
+
+    // =======================================================
+    // ⚡ 3. ระบบกดคัดลอกสคริปต์สำหรับปุ่มกด
+    // =======================================================
     function copyScript(button, text) {
         navigator.clipboard.writeText(text).then(() => {
             const originalText = button.innerHTML;
@@ -167,7 +214,7 @@
                 button.classList.remove("copied");
             }, 2000);
         }).catch(err => {
-            alert("ไม่สามารถคัดลอกได้ กรุณาครอบคลุมดำก๊อปปี้เองชั่วคราวครับ");
+            alert("ไม่สามารถคัดลอกได้ ระบบความปลอดภัยบล็อกไว้ชั่วคราวครับ");
         });
     }
 </script>
